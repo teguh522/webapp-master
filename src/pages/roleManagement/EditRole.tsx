@@ -11,14 +11,21 @@ import {
   TextField,
   Select,
   MenuItem,
-  Typography
+  Typography,
+  TableContainer,
+  Paper,
+  Table,
+  TableRow,
+  TableCell,
+  TableHead,
+  Checkbox
 } from '@mui/material'
 import { useState } from 'react'
 
 const EditRole = () => {
-  const [permission,setPermission]=useState([])
-  const [rolePermission,setRolePermission]=useState([])
-  
+  const [permission, setPermission] = useState([])
+  const [rolePermission, setRolePermission] = useState([])
+
   const listMenu = [
     {
       value: "user_management",
@@ -74,7 +81,51 @@ const EditRole = () => {
                 <p>Menu Permission</p>
               </Grid>
               <Grid item xs={8}>
-
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650, marginBottom: 7 }} aria-label="sticky table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align='center'>Menu</TableCell>
+                        <TableCell align='center'>Permission</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    {listMenu.map(item => {
+                      return (
+                        <TableRow
+                          key={item.value}
+                        >
+                          <TableCell align='center'>{item.deskripsi}</TableCell>
+                          <TableCell align='center'>
+                            <FormControlLabel
+                              value="create"
+                              control={<Checkbox />}
+                              label="Create"
+                              labelPlacement="start"
+                            />
+                            <FormControlLabel
+                              value="view"
+                              control={<Checkbox />}
+                              label="View"
+                              labelPlacement="start"
+                            />
+                            <FormControlLabel
+                              value="edit"
+                              control={<Checkbox />}
+                              label="Edit"
+                              labelPlacement="start"
+                            />
+                            <FormControlLabel
+                              value="view"
+                              control={<Checkbox />}
+                              label="Delete"
+                              labelPlacement="start"
+                            />
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                  </Table>
+                </TableContainer>
               </Grid>
               <Grid container spacing={2} justifyContent={'right'}>
                 <Grid item>
