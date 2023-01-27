@@ -18,6 +18,7 @@ import DatePicker from 'react-datepicker'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
+import { InputLabel, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 
 // Custom Input
 const CustomInput = forwardRef((props, ref) => {
@@ -32,6 +33,11 @@ const CreateUser = () => {
   const [Role, setRole] = useState<string[]>([])
   const [Organization, setOrganization] = useState<string[]>([])
   const [birthDate, setBirthDate] = useState<Date | null | undefined>(null)
+  const [rowTable, setRowTable] = useState<any[]>([1])
+
+  const addStructureBtn = () => {
+    setRowTable([...rowTable, 1])
+  }
 
   // Handle Select
   const handleGenderChange = (event: SelectChangeEvent<string>) => {
@@ -49,6 +55,37 @@ const CreateUser = () => {
   const handleOrganizationChange = (event: SelectChangeEvent<string[]>) => {
     setOrganization(event.target.value as string[])
   }
+  const [organisasiName, setOrganisasiName] = useState<string[]>([]);
+  const dataOrganisasi = [
+    'Siloam LV',
+    'Siloam KJ',
+  ];
+  const handleChangeMultiple = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { options } = event.target;
+    const value: string[] = [];
+    for (let i = 0, l = options.length; i < l; i += 1) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    setOrganisasiName(value);
+  };
+
+  const [departementName, setDepartmentName] = useState<string[]>([]);
+  const dataDepartement = [
+    'SVP Front Office',
+    'SVp Cashier',
+  ];
+  const handleChangeMultipleDepartment = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { options } = event.target;
+    const value: string[] = [];
+    for (let i = 0, l = options.length; i < l; i += 1) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    setDepartmentName(value);
+  };
 
   return (
     <Card>
@@ -122,7 +159,7 @@ const CreateUser = () => {
             <Grid item xs={12} sm={9}>
               <TextField fullWidth type='number' id='employee-numb' sx={{ padding: 0 }} required />
             </Grid>
-            <Grid item xs={12} sm={3}>
+            {/* <Grid item xs={12} sm={3}>
               <label htmlFor='department'>Department</label>
             </Grid>
             <Grid item xs={12} sm={9}>
@@ -137,8 +174,82 @@ const CreateUser = () => {
                 <MenuItem value='Department2'>Department2</MenuItem>
                 <MenuItem value='Department3'>Department3</MenuItem>
               </Select>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={3}>
+              <label htmlFor='department'>Adminitrative Structure</label>
+            </Grid>
+            <Grid item xs={12} sm={9} display="flex" justifyContent={"flex-end"}>
+              <Button variant="contained" color="primary" onClick={addStructureBtn}>
+                + Add Adminitrative Structure
+              </Button>
+            </Grid>
+            {
+              rowTable.length > 0 &&
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align='center'>Organization</TableCell>
+                      <TableCell align='center'>Department</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rowTable.map((row, index) => (
+                      <TableRow
+                        key={index}
+                      >
+                        <TableCell align="center">
+                          <InputLabel shrink htmlFor="select-multiple-native">
+                            Organization
+                          </InputLabel>
+                          <Select
+                            multiple
+                            native
+                            value={organisasiName}
+                            // @ts-ignore Typings are not considering `native`
+                            onChange={handleChangeMultiple}
+                            label="Native"
+                            inputProps={{
+                              id: 'select-multiple-native',
+                            }}
+                          >
+                            {dataOrganisasi.map((name) => (
+                              <option key={name} value={name}>
+                                {name}
+                              </option>
+                            ))}
+                          </Select>
+                        </TableCell>
+                        <TableCell align="center">
+                          <InputLabel shrink htmlFor="select-multiple-native">
+                            Department
+                          </InputLabel>
+                          <Select
+                            multiple
+                            native
+                            value={departementName}
+                            // @ts-ignore Typings are not considering `native`
+                            onChange={handleChangeMultipleDepartment}
+                            label="Native"
+                            inputProps={{
+                              id: 'select-multiple-native',
+                            }}
+                          >
+                            {dataDepartement.map((name) => (
+                              <option key={name} value={name}>
+                                {name}
+                              </option>
+                            ))}
+                          </Select>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            }
+
+            {/* <Grid item xs={12} sm={3}>
               <label htmlFor='speciality'>Speciality</label>
             </Grid>
             <Grid item xs={12} sm={9}>
@@ -153,8 +264,8 @@ const CreateUser = () => {
                 <MenuItem value='Speciality2'>Speciality2</MenuItem>
                 <MenuItem value='Speciality3'>Speciality3</MenuItem>
               </Select>
-            </Grid>
-            <Grid item xs={12} sm={3}>
+            </Grid> */}
+            {/* <Grid item xs={12} sm={3}>
               <label htmlFor='role'>Role</label>
             </Grid>
             <Grid item xs={12} sm={9}>
@@ -170,8 +281,8 @@ const CreateUser = () => {
                 <MenuItem value='Role2'>Role2</MenuItem>
                 <MenuItem value='Role3'>Role3</MenuItem>
               </Select>
-            </Grid>
-            <Grid item xs={12} sm={3}>
+            </Grid> */}
+            {/* <Grid item xs={12} sm={3}>
               <label htmlFor='organization'>Organization</label>
             </Grid>
             <Grid item xs={12} sm={9}>
@@ -187,7 +298,7 @@ const CreateUser = () => {
                 <MenuItem value='Organization2'>Organization2</MenuItem>
                 <MenuItem value='Organization3'>Organization3</MenuItem>
               </Select>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <Box
                 sx={{
@@ -195,7 +306,8 @@ const CreateUser = () => {
                   display: 'flex',
                   flexWrap: 'wrap',
                   alignItems: 'center',
-                  justifyContent: 'end'
+                  justifyContent: 'end',
+                  marginRight: 5
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
